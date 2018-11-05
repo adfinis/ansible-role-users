@@ -4,6 +4,7 @@ dependencies:
   - role: adfinis-sygroup.ssh
 
 galaxy_info:
+  role_name: 'users'
   author: 'Adfinis SyGroup AG'
   description: 'Create and remove posix users and groups, add or remove ssh keys'
   company: 'Adfinis SyGroup AG'
