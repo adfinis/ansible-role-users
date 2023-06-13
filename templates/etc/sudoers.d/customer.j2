@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+{% if users_customer_unrestricted_sudo %}
+# Unrestricted sudo for customer:
+%{{ users_customer_group }} ALL=(ALL) NOPASSWD: ALL
+{% else %}
+# No unrestricted sudo for customer.
+{% endif %}

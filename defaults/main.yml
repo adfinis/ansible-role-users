@@ -1,0 +1,16 @@
+---
+
+users_root_authorized_keys: []
+
+users_adfinis: []
+users_adfinis_group: adfinis
+users_adfinis_homedir_mode: '0700'
+users_adfinis_unrestricted_sudo: yes
+users_adfinis_user_remove_home: no
+
+users_customer: []
+users_customer_homedir_mode: '0755'
+users_customer_unrestricted_sudo: no
+
+users_default_user: adfinis
+users_default_user_remove_home: no

@@ -1,0 +1,30 @@
+---
+
+- name: Query adfinis system group
+  ansible.builtin.getent:
+    database: group
+    key: adfinis
+  check_mode: no
+  register: users_register_getent_group_adfinis
+
+- name: Extract users in adfinis system group
+  ansible.builtin.set_fact:
+    users_adfinis_all: '{{ users_register_getent_group_adfinis.ansible_facts.getent_group["adfinis"][2] | split(",") }}'
+  check_mode: no
+
+- name: Filter users list for old Adfinis users
+  ansible.builtin.set_fact:
+    users_adfinis_delete: '{{ users_adfinis_all | difference(users_adfinis | map(attribute="username")) }}'
+  check_mode: no
+
+- name: Delete old Adfinis users
+  ansible.builtin.include_tasks:
+    file: adfinis_delete_user.yml
+    apply:
+      tags:
+        - 'role::users'
+        - 'role::users:adfinis'
+        - 'role::users:adfinis:delete'
+  loop: '{{ users_adfinis_delete }}'
+  loop_control:
+    loop_var: _users_user

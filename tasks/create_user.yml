@@ -1,0 +1,62 @@
+---
+
+- name: Create {{ _users_secondary_group }} user group {{ _users_user.username }}
+  ansible.builtin.group:
+    name: '{{ _users_user.username }}'
+    state: present
+
+- name: Create {{ _users_secondary_group }} user {{ _users_user.username }}
+  ansible.builtin.user:
+    name: '{{ _users_user.username }}'
+    group: '{{ _users_user.username }}'
+    groups: '{{ _users_secondary_groups }}'
+    append: yes
+    password_lock: yes
+    home: /home/{{ _users_user.username }}
+    create_home: yes
+    shell: /bin/bash
+
+- name: Save {{ _users_secondary_group }} user existence information
+  block:
+    - name: Check existence of {{ _users_secondary_group }} user {{ _users_user.username }}
+      ansible.builtin.getent:
+        database: passwd
+        key: '{{ _users_user.username }}'
+      check_mode: no
+
+    - name: Save fact that {{ _users_secondary_group }} user {{ _users_user.username }} exists
+      ansible.builtin.set_fact:
+        fact_users_user_exists: yes
+
+  rescue:
+    - name: Fail if {{ _users_secondary_group }} user {{ _users_user.username }} does not exist despite not running in check mode
+      ansible.builtin.fail:
+        msg: '{{ _users_secondary_group }} user {{ _users_user.username }} does not exist'
+      when: not ansible_check_mode
+
+    - name: Save fact that {{ _users_secondary_group }} user {{ _users_user.username }} does not exist
+      ansible.builtin.set_fact:
+        fact_users_user_exists: no
+
+- name: Create personal directories for {{ _users_secondary_group }} user {{ _users_user.username }}
+  ansible.builtin.file:
+    path: /home/{{ _users_user.username }}/{{ item.dir }}
+    state: directory
+    owner: '{{ _users_user.username }}'
+    group: '{{ _users_user.username }}'
+    mode: '{{ item.mode }}'
+  when: fact_users_user_exists
+  loop:
+    - dir: ''
+      mode: '{{ _users_homedir_mode }}'
+    - dir: '.ssh'
+      mode: '0700'
+
+- name: Install authorized_keys file for {{ _users_secondary_group }} user {{ _users_user.username }}
+  ansible.builtin.template:
+    src: home/.ssh/authorized_keys.j2
+    dest: /home/{{ _users_user.username }}/.ssh/authorized_keys
+    owner: '{{ _users_user.username }}'
+    group: '{{ _users_user.username }}'
+    mode: 0600
+  when: fact_users_user_exists
