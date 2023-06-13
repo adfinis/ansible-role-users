@@ -1,0 +1,22 @@
+---
+
+- name: Set root user password
+  ansible.builtin.user:
+    name: root
+    password: '{{ users_root_password }}'
+
+- name: Create ssh directory for root
+  ansible.builtin.file:
+    path: /root/.ssh
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Install authorized_keys file for root
+  ansible.builtin.template:
+    src: root/.ssh/authorized_keys.j2
+    dest: /root/.ssh/authorized_keys
+    owner: root
+    group: root
+    mode: 0600

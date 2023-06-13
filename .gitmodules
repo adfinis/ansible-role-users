@@ -1,0 +1,3 @@
+[submodule "ansible-lint-rules"]
+	path = lint-rules
+	url = https://github.com/adfinis/ansible-lint-rules

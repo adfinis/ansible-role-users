@@ -1,0 +1,51 @@
+---
+
+- name: Create customer group
+  ansible.builtin.group:
+    name: '{{ users_customer_group }}'
+    state: present
+
+- name: Save customer group existence information
+  block:
+    - name: Check existence of customer group
+      ansible.builtin.getent:
+        database: group
+        key: '{{ users_customer_group }}'
+      check_mode: no
+
+    - name: Save fact that customer group exists
+      ansible.builtin.set_fact:
+        facts_users_customer_group_exists: yes
+
+  rescue:
+    - name: Fail if customer group does not exist despite not running in check mode
+      ansible.builtin.fail:
+        msg: customer group does not exist
+      when: not ansible_check_mode
+
+    - name: Save fact that customer group does not exist
+      ansible.builtin.set_fact:
+        facts_users_customer_group_exists: no
+
+- name: Create customer users
+  ansible.builtin.include_tasks:
+    file: create_user.yml
+    apply:
+      tags:
+        - 'role::users'
+        - 'role::users:customer'
+  vars:
+    _users_homedir_mode: '{{ users_customer_homedir_mode }}'
+    _users_secondary_group: '{{ users_customer_group }}'
+    _users_secondary_groups: '{{ facts_users_customer_group_exists | ternary([users_customer_group], []) }}'
+  loop: '{{ users_customer }}'
+  loop_control:
+    loop_var: _users_user
+
+- name: Set up sudo permissions for customer group
+  ansible.builtin.template:
+    src: etc/sudoers.d/customer.j2
+    dest: /etc/sudoers.d/{{ users_customer_group }}
+    owner: root
+    group: root
+    mode: 0400

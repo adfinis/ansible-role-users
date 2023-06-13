@@ -1,0 +1,8 @@
+# {{ ansible_managed }}
+
+{% if users_adfinis_unrestricted_sudo %}
+# Unrestricted sudo for Adfinis:
+%{{ users_adfinis_group }} ALL = (ALL) NOPASSWD: ALL
+{% else %}
+# No unrestricted sudo for Adfinis.
+{% endif %}

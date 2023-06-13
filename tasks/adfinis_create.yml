@@ -1,0 +1,53 @@
+---
+
+- name: Create Adfinis group
+  ansible.builtin.group:
+    name: '{{ users_adfinis_group }}'
+    state: present
+
+- name: Save Adfinis group existence information
+  block:
+    - name: Check existence of Adfinis group
+      ansible.builtin.getent:
+        database: group
+        key: '{{ users_adfinis_group }}'
+      check_mode: no
+
+    - name: Save fact that Adfinis group exists
+      ansible.builtin.set_fact:
+        facts_users_adfinis_group_exists: yes
+
+  rescue:
+    - name: Fail if Adfinis group does not exist despite not running in check mode
+      ansible.builtin.fail:
+        msg: Adfinis group does not exist
+      when: not ansible_check_mode
+
+    - name: Save fact that Adfinis group does not exist
+      ansible.builtin.set_fact:
+        facts_users_adfinis_group_exists: no
+
+- name: Create Adfinis users
+  ansible.builtin.include_tasks:
+    file: create_user.yml
+    apply:
+      tags:
+        - 'role::users'
+        - 'role::users:adfinis'
+        - 'role::users:adfinis:create'
+  vars:
+    _users_ssh_pubkey_options: '{{ users_adfinis_ssh_pubkey_options or omit }}'
+    _users_homedir_mode: '{{ users_adfinis_homedir_mode }}'
+    _users_secondary_group: '{{ users_adfinis_group }}'
+    _users_secondary_groups: '{{ facts_users_adfinis_group_exists | ternary([users_adfinis_group], []) }}'
+  loop: '{{ users_adfinis }}'
+  loop_control:
+    loop_var: _users_user
+
+- name: Set up sudo permissions for adfinis group
+  ansible.builtin.template:
+    src: etc/sudoers.d/adfinis.j2
+    dest: /etc/sudoers.d/adfinis
+    owner: root
+    group: root
+    mode: 0400
