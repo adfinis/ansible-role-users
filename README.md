@@ -38,7 +38,8 @@ Role Variables
 ### Mandatory
 
  * `users_root_password` (string):
-   Root password to be set for the system.
+   Root password to be set for the system. The password is expected to be hashed
+   (with [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
 
  * `users_customer_group` (string):
    Name of the system group to which all customer user accounts are added.
@@ -119,3 +120,4 @@ Role Variables
 
 
 [ansible:vars:default_jinja2_native]: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-jinja2-native
+[ansible:filter:password_hash]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/password_hash_filter.html
