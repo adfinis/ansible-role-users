@@ -38,14 +38,24 @@ Role Variables
 ### Mandatory
 
  * `users_root_password` (string):
-   Root password to be set for the system. The password is expected to be hashed
-   (with [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
+   Root password to be set for the system. The password is expected to be in
+   clear-text, unless `users_root_password_is_hashed` is set to `yes`, in which
+   case it is expected to be the hashed (with
+   [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
+
+ * `users_root_password_salt` (string):
+   Salt to be used for hashing the root password (not required if
+   `users_root_password_is_hashed` is set to `yes`).
 
  * `users_customer_group` (string):
    Name of the system group to which all customer user accounts are added.
    **Note**: Only required if `users_customer` (see below) is non-empty.
 
 ### Optional
+
+ * `users_root_password_is_hashed` (boolean, default: `no`):
+   If set to `yes`, `users_root_password` is assumed to have been hashed
+   already (in this case, `users_root_password_salt` is not required).
 
  * `users_root_authorized_keys` (list, default: `[]`):
    SSH public keys that will be given authorisation to log in as `root`.

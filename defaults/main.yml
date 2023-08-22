@@ -1,5 +1,6 @@
 ---
 
+users_root_password_is_hashed: no
 users_root_authorized_keys: []
 
 users_adfinis: []
