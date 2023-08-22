@@ -2,6 +2,6 @@
 
 - name: Remove pre-existing default user ({{ users_default_user }})
   ansible.builtin.user:
-    name: '{{ users_default_user }}'
+    name: "{{ users_default_user }}"
     state: absent
-    remove: '{{ users_default_user_remove_home }}'
+    remove: "{{ users_default_user_remove_home }}"

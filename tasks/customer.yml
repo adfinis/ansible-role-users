@@ -2,7 +2,7 @@
 
 - name: Create customer group
   ansible.builtin.group:
-    name: '{{ users_customer_group }}'
+    name: "{{ users_customer_group }}"
     state: present
 
 - name: Save customer group existence information
@@ -10,12 +10,12 @@
     - name: Check existence of customer group
       ansible.builtin.getent:
         database: group
-        key: '{{ users_customer_group }}'
-      check_mode: no
+        key: "{{ users_customer_group }}"
+      check_mode: false
 
     - name: Save fact that customer group exists
       ansible.builtin.set_fact:
-        facts_users_customer_group_exists: yes
+        facts_users_customer_group_exists: true
 
   rescue:
     - name: Fail if customer group does not exist despite not running in check mode
@@ -25,20 +25,20 @@
 
     - name: Save fact that customer group does not exist
       ansible.builtin.set_fact:
-        facts_users_customer_group_exists: no
+        facts_users_customer_group_exists: false
 
 - name: Create customer users
   ansible.builtin.include_tasks:
     file: create_user.yml
     apply:
       tags:
-        - 'role::users'
-        - 'role::users:customer'
+        - "role::users"
+        - "role::users:customer"
   vars:
-    _users_homedir_mode: '{{ users_customer_homedir_mode }}'
-    _users_secondary_group: '{{ users_customer_group }}'
-    _users_secondary_groups: '{{ facts_users_customer_group_exists | ternary([users_customer_group], []) }}'
-  loop: '{{ users_customer }}'
+    _users_homedir_mode: "{{ users_customer_homedir_mode }}"
+    _users_secondary_group: "{{ users_customer_group }}"
+    _users_secondary_groups: "{{ facts_users_customer_group_exists | ternary([users_customer_group], []) }}"
+  loop: "{{ users_customer }}"
   loop_control:
     loop_var: _users_user
 

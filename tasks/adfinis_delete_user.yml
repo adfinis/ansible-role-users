@@ -3,28 +3,28 @@
 - name: Get passwd entry for Adfinis user {{ _users_user }}
   ansible.builtin.getent:
     database: passwd
-    key: '{{ _users_user }}'
-  check_mode: no
+    key: "{{ _users_user }}"
+  check_mode: false
   register: users_register_getent_passwd_user
 
 - name: Get UID for Adfinis user {{ _users_user }} from passwd entry
   ansible.builtin.set_fact:
-    users_adfinis_uid: '{{ users_register_getent_passwd_user.ansible_facts.getent_passwd[_users_user][1] }}'
-  check_mode: no
+    users_adfinis_uid: "{{ users_register_getent_passwd_user.ansible_facts.getent_passwd[_users_user][1] }}"
+  check_mode: false
 
 - name: Fail if UID {{ users_adfinis_uid }} < 1000
   ansible.builtin.fail:
     msg: refusing to delete system account {{ _users_user }} (UID={{ users_adfinis_uid }})
-  check_mode: no
+  check_mode: false
   when: (users_adfinis_uid | int) < 1000
 
 - name: Delete Adfinis user {{ _users_user }}
   ansible.builtin.user:
-    name: '{{ _users_user }}'
+    name: "{{ _users_user }}"
     state: absent
-    remove: '{{ users_adfinis_user_remove_home }}'
+    remove: "{{ users_adfinis_user_remove_home }}"
 
 - name: Delete Adfinis user group {{ _users_user }}
   ansible.builtin.group:
-    name: '{{ _users_user }}'
+    name: "{{ _users_user }}"
     state: absent
