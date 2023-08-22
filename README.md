@@ -39,13 +39,13 @@ Role Variables
 
  * `users_root_password` (string):
    Root password to be set for the system. The password is expected to be in
-   clear-text, unless `users_root_password_is_hashed` is set to `yes`, in which
+   clear-text, unless `users_root_password_is_hashed` is set to `true`, in which
    case it is expected to be the hashed (with
    [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
 
  * `users_root_password_salt` (string):
    Salt to be used for hashing the root password (not required if
-   `users_root_password_is_hashed` is set to `yes`).
+   `users_root_password_is_hashed` is set to `true`).
 
  * `users_customer_group` (string):
    Name of the system group to which all customer user accounts are added.
@@ -53,8 +53,8 @@ Role Variables
 
 ### Optional
 
- * `users_root_password_is_hashed` (boolean, default: `no`):
-   If set to `yes`, `users_root_password` is assumed to have been hashed
+ * `users_root_password_is_hashed` (boolean, default: `false`):
+   If set to `true`, `users_root_password` is assumed to have been hashed
    already (in this case, `users_root_password_salt` is not required).
 
  * `users_root_authorized_keys` (list, default: `[]`):
@@ -96,10 +96,10 @@ Role Variables
    transformed), or [this Ansible option][ansible:vars:default_jinja2_native]
    must be set to true.
 
- * `users_adfinis_unrestricted_sudo` (boolean, default: `yes`):
+ * `users_adfinis_unrestricted_sudo` (boolean, default: `true`):
    Whether or not the Adfinis users are given unrestricted `sudo` permissions.
 
- * `users_adfinis_user_remove_home` (boolean, default: `no`):
+ * `users_adfinis_user_remove_home` (boolean, default: `false`):
    Whether or not to delete the home directory as well when deleting an unlisted
    Adfinis account.
 
@@ -118,13 +118,13 @@ Role Variables
    transformed), or [this Ansible option][ansible:vars:default_jinja2_native]
    must be set to true.
 
- * `users_customer_unrestricted_sudo` (boolean, default: `no`):
+ * `users_customer_unrestricted_sudo` (boolean, default: `false`):
    Whether or not the customer users are given unrestricted `sudo` permissions.
 
  * `users_default_user` (string, default: `adfinis`):
    Name of initially existing non-root user account on system, to be deleted.
 
- * `users_default_user_remove_home` (boolean, default: `no`):
+ * `users_default_user_remove_home` (boolean, default: `false`):
    Whether or not to delete the initially existing non-root user account's
    home directory as well.
 
