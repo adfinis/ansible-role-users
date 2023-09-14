@@ -1,0 +1,31 @@
+(unreleased)
+
+Improvements:
+
+ - users_root_password is now optional (not setting it will simply not change
+   the root password on the system). users_root_password_salt is only mandatory
+   if users_root_password is set (and users_root_password_is_hashed is false).
+
+Documentation:
+
+ - Changelog added, to allow better tracking of relevant changes for role users.
+
+================================================================================
+
+v0.2 (released: 2023-08-22)
+
+Changes:
+
+ - users_root_password is now expected to contain the unhashed password (and
+   users_root_password_salt must be passed alongside, unless
+   users_root_password_is_hashed is set to true).
+
+Documentation:
+
+ - Readme: Be clear about hashing the password
+
+================================================================================
+
+v0.1 (released: 2023-08-07)
+
+Initial release, imported from a private GitLab repository.
