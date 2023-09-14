@@ -37,21 +37,24 @@ Role Variables
 
 ### Mandatory
 
- * `users_root_password` (string, default: *unset*):
-   Root password to be set for the system if the variable is not unset. The password is expected to be in
-   clear-text, unless `users_root_password_is_hashed` is set to `true`, in which
-   case it is expected to be the hashed (with
-   [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
-
- * `users_root_password_salt` (string):
-   Salt to be used for hashing the root password (not required if
-   `users_root_password_is_hashed` is set to `true`).
+ * `users_root_password_salt` (string, default: *unset*):
+   Salt to be used for hashing the root password.
+   **Note**: Only required if `users_root_password` is set and
+   `users_root_password_is_hashed` is false.
 
  * `users_customer_group` (string):
    Name of the system group to which all customer user accounts are added.
-   **Note**: Only required if `users_customer` (see below) is non-empty.
+   **Note**: Only required if `users_customer` is non-empty.
 
 ### Optional
+
+ * `users_root_password` (string, default: *unset*):
+   If this is unset, the root password is not changed.
+   If this is set and `users_root_password_is_hashed` is false, this is the
+   password in clear-text, and `users_root_password_salt` must also be set.
+   If this is set and `users_root_password_is_hashed` is true, this is assumed
+   to be a hashed password (as produced by
+   [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
 
  * `users_root_password_is_hashed` (boolean, default: `false`):
    If set to `true`, `users_root_password` is assumed to have been hashed
@@ -62,12 +65,12 @@ Role Variables
    Each list element is an object with the following properties:
     - `key` (string, mandatory):
       Key data itself.
-    - `comment` (string, optional, default: unset):
+    - `comment` (string, optional, default: *unset*):
       Comment, appended to the key line (usually `user@host`).
-    - `description` (string, optional, default: unset):
+    - `description` (string, optional, default: *unset*):
       Human-readable description to be placed as a comment in the
       `authorized_keys` file above the key line.
-    - `options` (string, optional, default: unset):
+    - `options` (string, optional, default: *unset*):
       Key options string to be prepended to the key line.
 
  * `users_adfinis` (list, default: `[]`):
