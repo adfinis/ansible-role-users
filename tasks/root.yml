@@ -4,13 +4,13 @@
   ansible.builtin.user:
     name: root
     password: "{{ users_root_password | ansible.builtin.password_hash('sha512', users_root_password_salt) }}"
-  when: not users_root_password_is_hashed
+  when: not users_root_password_is_hashed and users_root_password is defined and users_root_password_salt is defined
 
 - name: Set pre-hashed root user password
   ansible.builtin.user:
     name: root
     password: "{{ users_root_password }}"
-  when: users_root_password_is_hashed
+  when: users_root_password_is_hashed and users_root_password is defined
 
 - name: Create ssh directory for root
   ansible.builtin.file:
