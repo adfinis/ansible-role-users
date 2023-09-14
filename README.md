@@ -37,8 +37,8 @@ Role Variables
 
 ### Mandatory
 
- * `users_root_password` (string):
-   Root password to be set for the system. The password is expected to be in
+ * `users_root_password` (string, default: *unset*):
+   Root password to be set for the system if the variable is not unset. The password is expected to be in
    clear-text, unless `users_root_password_is_hashed` is set to `true`, in which
    case it is expected to be the hashed (with
    [`ansible.builtin.password_hash`][ansible:filter:password_hash]).
