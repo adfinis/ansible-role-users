@@ -1,3 +1,11 @@
+v0.3.0 (released: 2023-09-21)
+
+Bugfixes:
+
+ - Release with point release 0, to satisfy SemVer specification.
+
+--------------------------------------------------------------------------------
+
 v0.3 (released: 2023-09-19)
 
 Improvements:
