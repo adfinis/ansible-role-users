@@ -1,30 +1,49 @@
 ---
 
-- name: Query adfinis system group
-  ansible.builtin.getent:
-    database: group
-    key: adfinis
-  check_mode: false
-  register: users_register_getent_group_adfinis
+- name: Save Adfinis group existence information
+  block:
+    - name: Check existence of Adfinis group
+      ansible.builtin.getent:
+        database: group
+        key: "{{ users_adfinis_group }}"
+      check_mode: false
+      register: users_register_getent_group_adfinis
 
-- name: Extract users in adfinis system group
-  ansible.builtin.set_fact:
-    users_adfinis_all: "{{ users_register_getent_group_adfinis.ansible_facts.getent_group['adfinis'][2] | split(',') }}"
-  check_mode: false
+    - name: Save fact that Adfinis group exists
+      ansible.builtin.set_fact:
+        facts_users_adfinis_group_exists: true
 
-- name: Filter users list for old Adfinis users
-  ansible.builtin.set_fact:
-    users_adfinis_delete: "{{ users_adfinis_all | difference(users_adfinis | map(attribute='username')) }}"
-  check_mode: false
+  rescue:
+    - name: Fail if Adfinis group does not exist despite not running in check mode
+      ansible.builtin.fail:
+        msg: Adfinis group does not exist
+      when: not ansible_check_mode
 
-- name: Delete old Adfinis users
-  ansible.builtin.include_tasks:
-    file: adfinis_delete_user.yml
-    apply:
-      tags:
-        - "role::users"
-        - "role::users:adfinis"
-        - "role::users:adfinis:delete"
-  loop: "{{ users_adfinis_delete }}"
-  loop_control:
-    loop_var: _users_user
+    - name: Save fact that Adfinis group does not exist
+      ansible.builtin.set_fact:
+        facts_users_adfinis_group_exists: false
+
+- name: Delete users from Adfinis group
+  when: facts_users_adfinis_group_exists
+  block:
+    - name: Extract users from Adfinis group
+      ansible.builtin.set_fact:
+        users_adfinis_all: "{{ users_register_getent_group_adfinis.ansible_facts.getent_group['adfinis'][2] | split(',') }}"
+      check_mode: false
+
+    - name: Filter users list for old Adfinis users
+      ansible.builtin.set_fact:
+        users_adfinis_delete: "{{ users_adfinis_all | difference(users_adfinis | map(attribute='username')) }}"
+      check_mode: false
+
+    - name: Delete old Adfinis users
+      ansible.builtin.include_tasks:
+        file: adfinis_delete_user.yml
+        apply:
+          tags:
+            - "role::users"
+            - "role::users:adfinis"
+            - "role::users:adfinis:delete"
+      loop: "{{ users_adfinis_delete }}"
+      loop_control:
+        loop_var: _users_user
