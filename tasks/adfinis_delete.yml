@@ -28,7 +28,7 @@
   block:
     - name: Extract users from Adfinis group
       ansible.builtin.set_fact:
-        users_adfinis_all: "{{ users_register_getent_group_adfinis.ansible_facts.getent_group['adfinis'][2] | split(',') }}"
+        users_adfinis_all: "{{ users_register_getent_group_adfinis.ansible_facts.getent_group['adfinis'][2] | split(',') | reject('match', '^$') }}"
       check_mode: false
 
     - name: Filter users list for old Adfinis users
