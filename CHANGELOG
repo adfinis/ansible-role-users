@@ -1,3 +1,11 @@
+(unreleased)
+
+Bugfixes:
+
+ - Only delete Adfinis users if the group exists (instead of crashing).
+
+================================================================================
+
 v0.3 (released: 2023-09-19)
 
 Improvements:
