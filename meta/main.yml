@@ -13,3 +13,10 @@ galaxy_info:
       versions:
         - focal
         - jammy
+  galaxy_tags:
+    - usermanagement
+collections:
+  - ansible.posix
+  - community.general
+
+dependencies: []
