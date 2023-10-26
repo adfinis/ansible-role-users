@@ -3,6 +3,9 @@
 Bugfixes:
 
  - Only delete Adfinis users if the group exists (instead of crashing).
+ - Add missing meta file information for Galaxy NG.
+ - Extend workflow configuration to pull correct version of workflow module;
+   adapt workflow configuration accordingly.
 
 ================================================================================
 
