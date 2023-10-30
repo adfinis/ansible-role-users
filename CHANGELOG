@@ -1,8 +1,18 @@
+v0.3.3 (released: 2023-10-30)
+
+Bugfixes:
+
+ - Add missing meta file information for Galaxy NG.
+ - Extend workflow configuration to pull correct version of workflow module;
+   adapt workflow configuration accordingly.
+
+--------------------------------------------------------------------------------
+
 v0.3.2 (released: 2023-10-26)
 
 Bugfixes:
 
- - Fix CI pipeline.
+ - Add missing CI pipeline configuration.
 
 --------------------------------------------------------------------------------
 
