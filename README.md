@@ -132,5 +132,15 @@ Role Variables
    home directory as well.
 
 
+Support Policy
+--------------
+
+Only the latest release is maintained and supported (see the [Tags
+page](https://github.com/adfinis/ansible-role-users/tags)).
+
+Once a new release is made, the previous release branch no longer receives any
+bugfixes.
+
+
 [ansible:vars:default_jinja2_native]: https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-jinja2-native
 [ansible:filter:password_hash]: https://docs.ansible.com/ansible/latest/collections/ansible/builtin/password_hash_filter.html
