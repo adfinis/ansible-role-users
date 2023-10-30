@@ -1,1 +1,5 @@
+# Primary code owner/maintainer:
 * @martinwe-adfinis
+
+# CI (GitHub Actions) configuration:
+.github/workflows/ @aconitumnapellus
