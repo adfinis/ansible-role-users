@@ -39,14 +39,20 @@ Role Variables
 
  * `users_root_password_salt` (string, default: *unset*):<br />
    Salt to be used for hashing the root password.<br />
-   **Note**: Only required if `users_root_password` is set and
-   `users_root_password_is_hashed` is false.
+   **Note**: Only required if `users_configure_root` is true,
+   `users_root_password` is set and `users_root_password_is_hashed` is false.
 
  * `users_customer_group` (string):<br />
    Name of the system group to which all customer user accounts are added.<br />
-   **Note**: Only required if `users_customer` is non-empty.
+   **Note**: Only required if `users_configure_root` is true and
+   `users_customer` is non-empty.
 
 ### Optional
+
+ * `users_configure_root` (boolean, default: false):<br />
+   If this is set to false, anything related to the root account is skipped. If
+   set to true, the account is configured according to the `users_root…`
+   variables.
 
  * `users_root_password` (string, default: *unset*):<br />
    If this is unset, the root password is not changed.<br />
@@ -73,6 +79,11 @@ Role Variables
       `authorized_keys` file above the key line.
     - `options` (string, optional, default: *unset*):<br />
       Key options string to be prepended to the key line.
+
+ * `users_configure_adfinis` (boolean, default: false):<br />
+   If this is set to false, anything related to the Adfinis user accounts is
+   skipped. If set to true, the user accounts are created/deleted/configured
+   according to the `users_adfinis…` variables.
 
  * `users_adfinis` (list, default: `[]`):<br />
    Adfinis user accounts to be set up. Each user will be added to the
@@ -107,6 +118,11 @@ Role Variables
  * `users_adfinis_user_remove_home` (boolean, default: `false`):<br />
    Whether or not to delete the home directory as well when deleting an unlisted
    Adfinis account.
+
+ * `users_configure_customers` (boolean, default: false):<br />
+   If this is set to false, anything related to the customer user accounts is
+   skipped. If set to true, the user accounts are created/configured according
+   to the `users_customer…` variables.
 
  * `users_customer` (list, default: `[]`):<br />
    Adfinis user accounts to be set up. Each user will be added to the

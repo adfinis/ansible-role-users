@@ -1,5 +1,14 @@
 (unreleased)
 
+BREAKING CHANGES:
+
+ - New boolean variables (users_configure_root, users_configure_adfinis,
+   users_configure_customers and users_delete_default_user) have been added to
+   allow using the different parts of the roles individually. They are set to
+   false by default, so without any configuration, the role does nothing
+   (existing consumers need to set them to true to continue using the role as
+   before).
+
 Bugfixes:
 
  - Only delete Adfinis users if the group exists (instead of crashing).
