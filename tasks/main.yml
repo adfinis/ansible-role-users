@@ -6,6 +6,7 @@
     - "init"
     - "role::users"
     - "role::users:root"
+  when: users_configure_root
 
 - name: Set up Adfinis users
   ansible.builtin.import_tasks: adfinis_create.yml
@@ -14,6 +15,7 @@
     - "role::users"
     - "role::users:adfinis"
     - "role::users:adfinis:create"
+  when: users_configure_adfinis
 
 - name: Delete unlisted Adfinis users
   ansible.builtin.import_tasks: adfinis_delete.yml
@@ -22,16 +24,20 @@
     - "role::users"
     - "role::users:adfinis"
     - "role::users:adfinis:delete"
+  when: users_configure_adfinis
 
 - name: Set up customer user
   ansible.builtin.import_tasks: customer.yml
   tags:
     - "role::users"
     - "role::users:customer"
-  when: users_customer
+  when:
+    - users_configure_customers
+    - users_customer
 
 - name: Delete initial/default user
   ansible.builtin.import_tasks: default.yml
   tags:
     - "role::users"
     - "role::users:default"
+  when: users_delete_default_user
