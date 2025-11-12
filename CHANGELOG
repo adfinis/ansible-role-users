@@ -6,6 +6,7 @@ Bugfixes:
  - Add missing meta file information for Galaxy NG.
  - Extend workflow configuration to pull correct version of workflow module;
    adapt workflow configuration accordingly.
+ - Do not hardcode Adfinis users group name.
 
 ================================================================================
 
