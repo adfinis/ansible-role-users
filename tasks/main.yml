@@ -33,7 +33,6 @@
     - "role::users:customer"
   when:
     - users_configure_customers
-    - users_customer
 
 - name: Delete initial/default user
   ansible.builtin.import_tasks: default.yml
