@@ -7,6 +7,14 @@ This role sets up customer and Adfinis user accounts.
 Requirements
 ------------
 
+### Management host
+
+If the root account shall be set up with a login password, `python-passlib` may
+be required locally (in particular if `users_configure_root` is true,
+`users_root_password` is set, and `users_root_password_is_hashed` is false).
+
+### Initial setup
+
 This role assumes that there is an initial non-root user with sudo permissions
 present on the system (`{{users_default_user}}`, see *Role Variables* below).
 
