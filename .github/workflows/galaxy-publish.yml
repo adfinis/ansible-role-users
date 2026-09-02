@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e #v2
       - name: galaxy
-        uses: robertdebock/galaxy-action@1.2.1
+        uses: robertdebock/galaxy-action@7d89099e09f4385ec4b53eb58c0d120f1ad806dd #1.2.1
         with:
           galaxy_api_key: ${{ secrets.galaxy_api_key }}
           git_branch: ${{ github.ref_name }}
